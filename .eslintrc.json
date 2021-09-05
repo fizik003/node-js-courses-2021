@@ -1,0 +1,20 @@
+{
+  "env": {
+    "node": true,
+    "es2020": true
+  },
+  "root": true,
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "parserOptions": {
+        "project": ["tsconfig.json"],
+        "createDefaultProgram": true
+      },
+      "extends": ["plugin:@typescript-eslint/recommended", "prettier"],
+      "rules": {}
+    }
+
+    // Configuration for unit and e2e spec files
+  ]
+}
