@@ -15,7 +15,6 @@ class MyTransformStream extends Transform {
   }
 }
 
-console.time();
 const myTransformStream = new MyTransformStream();
 
 pipeline(readStream, myTransformStream, writeStream, (err) => {
