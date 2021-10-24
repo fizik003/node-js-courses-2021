@@ -1,3 +1,4 @@
+import { requestValidator } from './../../middleware/requestFieldValidation';
 import { IUserReq } from './user.model';
 import { Router } from 'express';
 import * as userService from './user.service';
@@ -21,7 +22,7 @@ router.get('/:id', async (req, res) => {
   res.json(user);
 });
 
-router.post('/', async (req, res) => {
+router.post('/', requestValidator, async (req, res) => {
   const userData: IUserReq = {
     login: req.body.login,
     age: req.body.age,
@@ -34,13 +35,13 @@ router.post('/', async (req, res) => {
   res.json(newUser);
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', requestValidator, async (req, res) => {
   const id = req.params.id;
   const { login, age, password } = req.body;
   const userData: Partial<IUserReq> = {
-    ...(login && { login }),
-    ...(age && { age }),
-    ...(password && { password }),
+    login,
+    age,
+    password,
   };
 
   const updatedUser = await userService.update(id, userData);

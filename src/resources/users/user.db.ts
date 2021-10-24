@@ -1,5 +1,5 @@
 import * as DB from '../../common/db';
-import { IUser, IUserReq, IUserRes } from './user.model';
+import { IUser, IUserReq } from './user.model';
 
 export async function getAll(): Promise<IUser[]> {
   return DB.getAllUser();
