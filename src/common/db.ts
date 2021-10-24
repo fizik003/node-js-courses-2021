@@ -11,6 +11,14 @@ export function getAllUser(): IUser[] {
   return DB.users;
 }
 
+export function getByParams(subString = '', limit?: number): IUser[] | undefined {
+  const users = DB.users
+    .filter((user) => user.login.toLocaleLowerCase().includes(subString.toLocaleLowerCase()))
+    .sort((a, b) => a.login.localeCompare(b.login))
+    .slice(0, limit);
+  return users;
+}
+
 export function getUser(id: string): IUser {
   return DB.users.filter((user) => !user.isDeleted && user.id === id)[0];
 }

@@ -5,12 +5,15 @@ import * as userService from './user.service';
 export const router = Router();
 
 router.get('/', async (req, res) => {
-  const users = await userService.getAll();
+  const { loginSubstring, limit } = req.query;
+  const users = await userService.getUsers(loginSubstring as string, limit as string);
+
   res.json(users);
 });
 
 router.get('/:id', async (req, res) => {
   const user = await userService.get(req.params.id);
+
   if (!user) {
     return res.json({ message: 'user not found' }).status(404);
   }

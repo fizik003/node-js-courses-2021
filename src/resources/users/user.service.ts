@@ -1,7 +1,15 @@
 import * as userDb from './user.db';
 import { IUserReq, IUserRes, User } from './user.model';
 
-export const getAll = async (): Promise<IUserRes[]> => {
+export const getUsers = async (subStr?: string, limit?: string): Promise<IUserRes[]> => {
+  if (subStr !== undefined || limit !== undefined) {
+    const isNumber = /^\d+$/.test(limit);
+    subStr = subStr ? subStr : '';
+    const limitRes = isNumber ? Number(limit) : undefined;
+    return (await userDb.getByParams(subStr, limitRes))
+      .filter((user) => !user.isDeleted)
+      .map((user) => User.toResponce(user));
+  }
   const users = await userDb.getAll();
   return users.filter((user) => !user.isDeleted).map((user) => User.toResponce(user));
 };

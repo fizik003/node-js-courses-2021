@@ -5,6 +5,10 @@ export async function getAll(): Promise<IUser[]> {
   return DB.getAllUser();
 }
 
+export async function getByParams(subStr: string, limit?: number): Promise<IUser[] | undefined> {
+  return DB.getByParams(subStr, limit);
+}
+
 export async function get(id: string): Promise<IUser> {
   return DB.getUser(id);
 }
