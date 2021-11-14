@@ -1,4 +1,3 @@
-import { IUser, IUserReq, IUserRes, User } from '../resources/users/user.model';
 import { Sequelize } from 'sequelize';
 import config from './config';
 
