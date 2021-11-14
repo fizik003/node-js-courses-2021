@@ -1,5 +1,5 @@
-import * as userDb from './user.db';
-import { IUserReq, IUserInstance } from './user.model';
+import * as userDb from '../data-access/user.db';
+import { IUserReq, IUserInstance } from '../models/user.model';
 
 export const getUsers = async (subStr?: string, limit?: string): Promise<IUserInstance[]> => {
   if (subStr !== undefined || limit !== undefined) {

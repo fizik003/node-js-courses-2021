@@ -1,4 +1,4 @@
-import { sequelize } from '../../common/db';
+import { sequelize } from '../common/db';
 import { DataTypes, Model, Optional } from 'sequelize';
 
 interface IUser {

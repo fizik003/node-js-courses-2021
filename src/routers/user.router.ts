@@ -1,7 +1,7 @@
-import { requestValidator } from './../../middleware/requestFieldValidation';
-import { IUserReq } from './user.model';
+import { requestValidator } from '../middleware/requestFieldValidation';
+import { IUserReq } from '../models/user.model';
 import { Router } from 'express';
-import * as userService from './user.service';
+import * as userService from '../services/user.service';
 
 export const router = Router();
 

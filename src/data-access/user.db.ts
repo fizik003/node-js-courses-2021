@@ -1,5 +1,5 @@
 import { Op } from 'sequelize';
-import { IUserInstance, IUserReq, User } from './user.model';
+import { IUserInstance, IUserReq, User } from '../models/user.model';
 
 export async function getAll(): Promise<IUserInstance[]> {
   return User.findAll({

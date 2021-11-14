@@ -1,7 +1,7 @@
 import config from './common/config';
 import { sequelize } from './common/db';
 import { app } from './app';
-import { User } from './resources/users/user.model';
+import { User } from './models/user.model';
 
 const { PORT } = config;
 
