@@ -1,7 +1,7 @@
-import { requestValidator } from './../../middleware/requestFieldValidation';
-import { IUserReq } from './user.model';
+import { requestValidator } from '../middleware/requestFieldValidation';
+import { IUserReq } from '../models/user.model';
 import { Router } from 'express';
-import * as userService from './user.service';
+import * as userService from '../services/user.service';
 
 export const router = Router();
 
@@ -26,7 +26,7 @@ router.post('/', requestValidator, async (req, res) => {
   const userData: IUserReq = {
     login: req.body.login,
     age: req.body.age,
-    password: req.body.age,
+    password: req.body.password,
   };
 
   const newUser = await userService.create(userData);
@@ -36,6 +36,8 @@ router.post('/', requestValidator, async (req, res) => {
 });
 
 router.put('/:id', requestValidator, async (req, res) => {
+  console.log(111111111111111111111111111111);
+
   const id = req.params.id;
   const { login, age, password } = req.body;
   const userData: Partial<IUserReq> = {
@@ -52,8 +54,8 @@ router.put('/:id', requestValidator, async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   const id = req.params.id;
-  const deletedUser = await userService.remove(id);
-  if (!deletedUser) return res.json({ message: 'user not deleted' }).status(400);
+  const isDeleted = await userService.remove(id);
+  if (!isDeleted) return res.json({ message: 'user not deleted' }).status(400);
 
-  res.json(deletedUser);
+  res.json('User deleted');
 });
