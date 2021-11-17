@@ -1,4 +1,4 @@
-import * as userDb from '../data-access/user.db';
+import { userDb } from '../data-access';
 import { IUserReq, IUserInstance } from '../models/user.model';
 
 export const getUsers = async (subStr?: string, limit?: string): Promise<IUserInstance[]> => {
