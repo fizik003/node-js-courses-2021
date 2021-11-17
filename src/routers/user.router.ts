@@ -30,14 +30,10 @@ router.post('/', requestValidator, async (req, res) => {
   };
 
   const newUser = await userService.create(userData);
-  if (!newUser) return res.json({ message: 'user not created' }).status(400);
-
   res.json(newUser);
 });
 
 router.put('/:id', requestValidator, async (req, res) => {
-  console.log(111111111111111111111111111111);
-
   const id = req.params.id;
   const { login, age, password } = req.body;
   const userData: Partial<IUserReq> = {
