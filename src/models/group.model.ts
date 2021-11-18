@@ -9,6 +9,8 @@ export enum Permission {
   UploadFiles = 'UPLOAD_FILES',
 }
 
+export type Per = 'READ' | 'WRITE' | 'DELETE' | 'SHARE' | 'UPLOAD_FILES';
+
 interface IGroup {
   id: string;
   name: string;
@@ -17,7 +19,7 @@ interface IGroup {
 
 export interface IGroupReq {
   name: string;
-  permission: Permission[];
+  permission: Per[];
 }
 
 export interface IGroupInstance extends Model<IGroup, IGroupReq> {}
