@@ -19,3 +19,17 @@ export const create = async (groupData: IGroupReq) => {
 
   return group;
 };
+
+export const update = async (id: string, updateData: Partial<IGroupReq>) => {
+  const updatedData = await groupDb.update(id, updateData);
+  if (!updatedData[0]) return;
+
+  return updatedData[1][0];
+};
+
+export const drop = async (id: string) => {
+  const isDelete = !!(await groupDb.drop(id));
+  if (!isDelete) return;
+
+  return isDelete;
+};

@@ -28,3 +28,24 @@ router.post('/', async (req, res) => {
 
   res.json(newGroup);
 });
+
+router.put('/:id', async (req, res) => {
+  const id = req.params.id;
+
+  const { name, permission } = req.body;
+  let updateData: Partial<IGroupReq> = {};
+  updateData.name = name;
+  if (permission) {
+    updateData.permission = (permission as string).split(',') as Per[];
+  }
+  const updatedGroup = await groupService.update(id, updateData);
+  if (!updatedGroup) return res.json({ message: 'group not updated' }).status(400);
+
+  res.json(updatedGroup);
+});
+
+router.delete('/:id', async (req, res) => {
+  const isDeleted = await groupService.drop(req.params.id);
+  if (!isDeleted) return res.json({ message: 'group was not deleted' });
+  res.json({ message: 'OK' });
+});

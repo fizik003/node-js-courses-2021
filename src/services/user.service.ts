@@ -29,7 +29,6 @@ export const create = async (user: IUserReq): Promise<IUserInstance> => {
 export const update = async (id: string, userData: Partial<IUserReq>) => {
   const updatedUser = await userDb.update(id, userData);
   if (!updatedUser[0]) return;
-  console.log(updatedUser);
 
   return updatedUser[1][0];
 };

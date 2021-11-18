@@ -11,3 +11,19 @@ export const getById = async (id: string): Promise<IGroupInstance> => {
 export const create = async (groupData: IGroupReq): Promise<IGroupInstance> => {
   return Group.create(groupData);
 };
+
+export const update = async (
+  id: string,
+  updateData: Partial<IGroupReq>
+): Promise<[number, IGroupInstance[]]> => {
+  return Group.update(updateData, {
+    where: {
+      id,
+    },
+    returning: true,
+  });
+};
+
+export const drop = async (id: string) => {
+  return Group.destroy({ where: { id } });
+};
