@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { groupFieldValidation } from '../middleware/groupFieldValidation';
 import { IGroupReq, Per, Permission } from '../models/group.model';
 import { groupService } from '../services';
 
@@ -16,7 +17,7 @@ router.get('/:id', async (req, res) => {
   res.json(group);
 });
 
-router.post('/', async (req, res) => {
+router.post('/', groupFieldValidation, async (req, res) => {
   const permisions = req.body.permission.split(',') as Per[];
   const groupData: IGroupReq = {
     name: req.body.name,

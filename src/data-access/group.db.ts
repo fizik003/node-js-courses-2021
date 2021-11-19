@@ -1,7 +1,9 @@
 import { Group, IGroupInstance, IGroupReq } from '../models/group.model';
 
 export async function get(): Promise<IGroupInstance[]> {
-  return Group.findAll();
+  return Group.findAll({
+    order: [['name', 'ASC']],
+  });
 }
 
 export const getById = async (id: string): Promise<IGroupInstance> => {

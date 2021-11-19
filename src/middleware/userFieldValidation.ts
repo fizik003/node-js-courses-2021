@@ -11,7 +11,7 @@ const schema = joi.object({
   age: joi.number().min(4).max(130).required(),
 });
 
-export const requestValidator = async (req: Request, res: Response, next: NextFunction) => {
+export const userFieldValidator = async (req: Request, res: Response, next: NextFunction) => {
   const { error } = schema.validate(req.body);
   if (error?.isJoi) {
     const mes = error.details[0].message;
