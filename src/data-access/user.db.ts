@@ -1,7 +1,8 @@
 import { Op } from 'sequelize';
-import { IUserInstance, IUserReq, User } from '../models/user.model';
+import { Group } from '../models/group.model';
+import { IUserReq, User } from '../models/user.model';
 
-export async function getAll(): Promise<IUserInstance[]> {
+export async function getAll() {
   return User.findAll({
     where: {
       isDeleted: false,
@@ -9,10 +10,7 @@ export async function getAll(): Promise<IUserInstance[]> {
   });
 }
 
-export async function getByParams(
-  subStr: string,
-  limit?: number
-): Promise<IUserInstance[] | undefined> {
+export async function getByParams(subStr: string, limit?: number) {
   return User.findAll({
     where: {
       isDeleted: false,
@@ -23,18 +21,19 @@ export async function getByParams(
   });
 }
 
-export async function get(id: string): Promise<IUserInstance> {
-  return User.findByPk(id);
+export async function get(id: string) {
+  return User.findByPk(id, {
+    include: {
+      model: Group,
+    },
+  });
 }
 
-export async function create(user: IUserReq): Promise<IUserInstance> {
+export async function create(user: IUserReq) {
   return User.create(user);
 }
 
-export async function update(
-  id: string,
-  userData: Partial<IUserReq>
-): Promise<[number, IUserInstance[]]> {
+export async function update(id: string, userData: Partial<IUserReq>) {
   return User.update(userData, {
     where: {
       id,

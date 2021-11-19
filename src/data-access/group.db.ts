@@ -1,23 +1,20 @@
-import { Group, IGroupInstance, IGroupReq } from '../models/group.model';
+import { Group, IGroupReq } from '../models/group.model';
 
-export async function get(): Promise<IGroupInstance[]> {
+export async function get() {
   return Group.findAll({
     order: [['name', 'ASC']],
   });
 }
 
-export const getById = async (id: string): Promise<IGroupInstance> => {
+export const getById = async (id: string) => {
   return Group.findByPk(id);
 };
 
-export const create = async (groupData: IGroupReq): Promise<IGroupInstance> => {
+export const create = async (groupData: IGroupReq) => {
   return Group.create(groupData);
 };
 
-export const update = async (
-  id: string,
-  updateData: Partial<IGroupReq>
-): Promise<[number, IGroupInstance[]]> => {
+export const update = async (id: string, updateData: Partial<IGroupReq>) => {
   return Group.update(updateData, {
     where: {
       id,

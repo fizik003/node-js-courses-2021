@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { groupFieldValidation } from '../middleware/groupFieldValidation';
-import { IGroupReq, Per, Permission } from '../models/group.model';
+import { IGroupReq, Permission } from '../models/group.model';
 import { groupService } from '../services';
 
 export const router = Router();
@@ -18,7 +18,7 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', groupFieldValidation, async (req, res) => {
-  const permisions = req.body.permission.split(',') as Per[];
+  const permisions = req.body.permission.split(',') as Permission[];
   const groupData: IGroupReq = {
     name: req.body.name,
     permission: permisions,
@@ -37,7 +37,7 @@ router.put('/:id', async (req, res) => {
   let updateData: Partial<IGroupReq> = {};
   updateData.name = name;
   if (permission) {
-    updateData.permission = (permission as string).split(',') as Per[];
+    updateData.permission = (permission as string).split(',') as Permission[];
   }
   const updatedGroup = await groupService.update(id, updateData);
   if (!updatedGroup) return res.json({ message: 'group not updated' }).status(400);

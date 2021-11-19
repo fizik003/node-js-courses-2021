@@ -11,10 +11,25 @@ interface IUser {
 
 export interface IUserReq extends Optional<IUser, 'id' | 'isDeleted'> {}
 
-export interface IUserInstance extends Model<IUser, IUserReq> {}
+export class User extends Model<IUser, IUserReq> implements IUser {
+  id!: string;
+  login!: string;
+  password!: string;
+  age!: number;
+  isDeleted!: boolean;
 
-export const User = sequelize.define<IUserInstance>(
-  'User',
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
+
+  toJSON() {
+    const values = Object.assign({}, this.get());
+    delete values.password;
+    delete values.isDeleted;
+    return values;
+  }
+}
+
+User.init(
   {
     id: {
       type: DataTypes.UUID,
@@ -41,14 +56,9 @@ export const User = sequelize.define<IUserInstance>(
     },
   },
   {
-    createdAt: false,
+    sequelize,
+    tableName: 'users',
+    timestamps: false,
     updatedAt: false,
   }
 );
-
-User.prototype.toJSON = function () {
-  const values = Object.assign({}, this.get());
-  delete values.password;
-  delete values.isDeleted;
-  return values;
-};

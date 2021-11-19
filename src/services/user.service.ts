@@ -1,7 +1,7 @@
 import { userDb } from '../data-access';
-import { IUserReq, IUserInstance } from '../models/user.model';
+import { IUserReq } from '../models/user.model';
 
-export const getUsers = async (subStr?: string, limit?: string): Promise<IUserInstance[]> => {
+export const getUsers = async (subStr?: string, limit?: string) => {
   if (subStr !== undefined || limit !== undefined) {
     const isNumber = /^\d+$/.test(limit);
     subStr = subStr ? subStr : '';
@@ -12,14 +12,14 @@ export const getUsers = async (subStr?: string, limit?: string): Promise<IUserIn
   return users;
 };
 
-export const get = async (id: string): Promise<IUserInstance> => {
+export const get = async (id: string) => {
   const user = await userDb.get(id);
   if (user) return user;
 
   return null;
 };
 
-export const create = async (user: IUserReq): Promise<IUserInstance> => {
+export const create = async (user: IUserReq) => {
   const newUser = await userDb.create(user);
   if (!newUser) return;
 

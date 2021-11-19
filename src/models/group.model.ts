@@ -1,15 +1,7 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../common/db';
 
-export enum Permission {
-  Read = 'READ',
-  Write = 'WRITE',
-  Delete = 'DELETE',
-  Share = 'SHARE',
-  UploadFiles = 'UPLOAD_FILES',
-}
-
-export type Per = 'READ' | 'WRITE' | 'DELETE' | 'SHARE' | 'UPLOAD_FILES';
+export type Permission = 'READ' | 'WRITE' | 'DELETE' | 'SHARE' | 'UPLOAD_FILES';
 
 interface IGroup {
   id: string;
@@ -17,15 +9,15 @@ interface IGroup {
   permission: Permission[];
 }
 
-export interface IGroupReq {
-  name: string;
-  permission: Per[];
+export interface IGroupReq extends Optional<IGroup, 'id'> {}
+
+export class Group extends Model<IGroup, IGroupReq> implements IGroup {
+  id!: string;
+  name!: string;
+  permission!: Permission[];
 }
 
-export interface IGroupInstance extends Model<IGroup, IGroupReq> {}
-
-export const Group = sequelize.define(
-  'Group',
+Group.init(
   {
     id: {
       type: DataTypes.UUID,
@@ -38,11 +30,15 @@ export const Group = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-
     permission: {
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false,
     },
   },
-  { timestamps: false, createdAt: false }
+  {
+    sequelize,
+    tableName: 'groups',
+    timestamps: false,
+    updatedAt: false,
+  }
 );
