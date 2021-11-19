@@ -1,5 +1,5 @@
 import { groupDb } from '../data-access';
-import { IGroupReq } from '../models/group.model';
+import { IGroupReq } from '../models';
 
 export const getAll = async () => {
   const groups = await groupDb.get();
@@ -32,4 +32,10 @@ export const drop = async (id: string) => {
   if (!isDelete) return;
 
   return isDelete;
+};
+
+export const addUsersToGroup = async (idGroup: string, idUsers: string[]) => {
+  const group = await groupDb.addUsersToGroup(idGroup, idUsers);
+  if (!group) return;
+  return group;
 };

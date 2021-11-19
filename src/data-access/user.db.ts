@@ -1,6 +1,5 @@
 import { Op } from 'sequelize';
-import { Group } from '../models/group.model';
-import { IUserReq, User } from '../models/user.model';
+import { IUserReq, User, Group } from '../models';
 
 export async function getAll() {
   return User.findAll({

@@ -1,5 +1,6 @@
-import { Model, DataTypes, Optional } from 'sequelize';
+import { Model, DataTypes, Optional, HasManyAddAssociationMixin } from 'sequelize';
 import { sequelize } from '../common/db';
+import { User } from './user.model';
 
 export type Permission = 'READ' | 'WRITE' | 'DELETE' | 'SHARE' | 'UPLOAD_FILES';
 
@@ -15,6 +16,8 @@ export class Group extends Model<IGroup, IGroupReq> implements IGroup {
   id!: string;
   name!: string;
   permission!: Permission[];
+
+  public addUser!: HasManyAddAssociationMixin<User, number>;
 }
 
 Group.init(
@@ -37,8 +40,11 @@ Group.init(
   },
   {
     sequelize,
-    tableName: 'groups',
+    tableName: 'Groups',
     timestamps: false,
     updatedAt: false,
   }
 );
+
+Group.belongsToMany(User, { through: 'UserGroup', onDelete: 'CASCADE' });
+User.belongsToMany(Group, { through: 'UserGroup', onDelete: 'CASCADE' });

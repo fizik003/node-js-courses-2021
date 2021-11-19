@@ -1,5 +1,5 @@
 import { userDb } from '../data-access';
-import { IUserReq } from '../models/user.model';
+import { IUserReq } from '../models';
 
 export const getUsers = async (subStr?: string, limit?: string) => {
   if (subStr !== undefined || limit !== undefined) {

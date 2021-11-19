@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import { groupFieldValidation } from '../middleware/groupFieldValidation';
+import { addUsersToGroupValidation, groupFieldValidation } from '../middleware/';
+
 import { IGroupReq, Permission } from '../models/group.model';
 import { groupService } from '../services';
 
@@ -49,4 +50,13 @@ router.delete('/:id', async (req, res) => {
   const isDeleted = await groupService.drop(req.params.id);
   if (!isDeleted) return res.json({ message: 'group was not deleted' });
   res.json({ message: 'OK' });
+});
+
+router.post('/:id', addUsersToGroupValidation, async (req, res) => {
+  const id = req.params.id;
+  const idUsers = req.body.usersId;
+  const group = await groupService.addUsersToGroup(id, idUsers);
+  if (!group) return res.json({ message: 'user did not added' }).status(400);
+
+  res.json(group);
 });

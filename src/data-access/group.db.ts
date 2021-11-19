@@ -1,4 +1,7 @@
-import { Group, IGroupReq } from '../models/group.model';
+import { sequelize } from '../common/db';
+import { Group, IGroupReq, User } from '../models';
+
+import { userDb } from './';
 
 export async function get() {
   return Group.findAll({
@@ -7,7 +10,7 @@ export async function get() {
 }
 
 export const getById = async (id: string) => {
-  return Group.findByPk(id);
+  return Group.findByPk(id, { include: User });
 };
 
 export const create = async (groupData: IGroupReq) => {
@@ -25,4 +28,22 @@ export const update = async (id: string, updateData: Partial<IGroupReq>) => {
 
 export const drop = async (id: string) => {
   return Group.destroy({ where: { id } });
+};
+
+export const addUsersToGroup = async (idGroup: string, idUsers: string[]) => {
+  const t = await sequelize.transaction();
+  try {
+    const group = await getById(idGroup);
+    await Promise.all(
+      idUsers.map(async (id) => {
+        const user = await userDb.get(id);
+        return group.addUser(user, { transaction: t });
+      })
+    );
+    await t.commit();
+    return getById(idGroup);
+  } catch (error) {
+    t.rollback();
+    return;
+  }
 };
