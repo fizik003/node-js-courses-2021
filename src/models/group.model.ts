@@ -1,4 +1,4 @@
-import { Model, DataTypes, Optional, HasManyAddAssociationMixin } from 'sequelize';
+import { Model, DataTypes, Optional, BelongsToManyAddAssociationMixin } from 'sequelize';
 import { sequelize } from '../common/db';
 import { User } from './user.model';
 
@@ -17,7 +17,7 @@ export class Group extends Model<IGroup, IGroupReq> implements IGroup {
   name!: string;
   permission!: Permission[];
 
-  public addUser!: HasManyAddAssociationMixin<User, number>;
+  public addUser!: BelongsToManyAddAssociationMixin<User, number>;
 }
 
 Group.init(

@@ -1,5 +1,12 @@
 import { sequelize } from '../common/db';
-import { DataTypes, HasManyAddAssociationMixin, Model, Optional } from 'sequelize';
+import {
+  DataTypes,
+  BelongsToManyAddAssociationMixin,
+  Model,
+  Optional,
+  BelongsToManyGetAssociationsMixin,
+  BelongsToManyRemoveAssociationsMixin,
+} from 'sequelize';
 import { Group } from './';
 
 interface IUser {
@@ -22,7 +29,9 @@ export class User extends Model<IUser, IUserReq> implements IUser {
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  public addGroup!: HasManyAddAssociationMixin<Group, number>;
+  public addGroup!: BelongsToManyAddAssociationMixin<Group, number>;
+  public removeGroups!: BelongsToManyRemoveAssociationsMixin<Group, string>;
+  public getGroups!: BelongsToManyGetAssociationsMixin<Group>;
 
   toJSON() {
     const values = Object.assign({}, this.get());

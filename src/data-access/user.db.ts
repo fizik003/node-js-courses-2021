@@ -1,4 +1,5 @@
 import { Op } from 'sequelize';
+import { sequelize } from '../common/db';
 import { IUserReq, User, Group } from '../models';
 
 export async function getAll() {
@@ -22,9 +23,11 @@ export async function getByParams(subStr: string, limit?: number) {
 
 export async function get(id: string) {
   return User.findByPk(id, {
-    include: {
-      model: Group,
-    },
+    include: [
+      {
+        model: Group,
+      },
+    ],
   });
 }
 
@@ -42,10 +45,18 @@ export async function update(id: string, userData: Partial<IUserReq>) {
 }
 
 export async function remove(id: string): Promise<boolean> {
-  const deletedUser = await User.findByPk(id);
-  if (!deletedUser) return false;
-
-  deletedUser.set('isDeleted', true);
-  deletedUser.save();
-  return true;
+  const t = await sequelize.transaction();
+  try {
+    const deletedUser = await User.findByPk(id);
+    if (!deletedUser) return false;
+    deletedUser.set('isDeleted', true);
+    const userGroups = await deletedUser.getGroups();
+    await deletedUser.removeGroups(userGroups, { transaction: t });
+    await deletedUser.save({ transaction: t });
+    await t.commit();
+    return true;
+  } catch (error) {
+    await t.rollback();
+    return;
+  }
 }
