@@ -1,9 +1,11 @@
 import express, { Request, Response } from 'express';
 import { userRouter, groupRouter } from './routers';
+import { requestLogger } from './middleware';
 
 export const app = express();
 
 app.use(express.json());
+app.use(requestLogger);
 
 app.use('/', (req: Request, res: Response, next) => {
   if (req.originalUrl === '/') {
