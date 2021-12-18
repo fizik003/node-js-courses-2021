@@ -1,7 +1,8 @@
 import { Op } from 'sequelize';
-import { IUserInstance, IUserReq, User } from '../models/user.model';
+import { sequelize } from '../common/db';
+import { IUserReq, User, Group } from '../models';
 
-export async function getAll(): Promise<IUserInstance[]> {
+export async function getAll() {
   return User.findAll({
     where: {
       isDeleted: false,
@@ -9,10 +10,7 @@ export async function getAll(): Promise<IUserInstance[]> {
   });
 }
 
-export async function getByParams(
-  subStr: string,
-  limit?: number
-): Promise<IUserInstance[] | undefined> {
+export async function getByParams(subStr: string, limit?: number) {
   return User.findAll({
     where: {
       isDeleted: false,
@@ -23,18 +21,21 @@ export async function getByParams(
   });
 }
 
-export async function get(id: string): Promise<IUserInstance> {
-  return User.findByPk(id);
+export async function get(id: string) {
+  return User.findByPk(id, {
+    include: [
+      {
+        model: Group,
+      },
+    ],
+  });
 }
 
-export async function create(user: IUserReq): Promise<IUserInstance> {
+export async function create(user: IUserReq) {
   return User.create(user);
 }
 
-export async function update(
-  id: string,
-  userData: Partial<IUserReq>
-): Promise<[number, IUserInstance[]]> {
+export async function update(id: string, userData: Partial<IUserReq>) {
   return User.update(userData, {
     where: {
       id,
@@ -44,10 +45,18 @@ export async function update(
 }
 
 export async function remove(id: string): Promise<boolean> {
-  const deletedUser = await User.findByPk(id);
-  if (!deletedUser) return false;
-
-  deletedUser.set('isDeleted', true);
-  deletedUser.save();
-  return true;
+  const t = await sequelize.transaction();
+  try {
+    const deletedUser = await User.findByPk(id);
+    if (!deletedUser) return false;
+    deletedUser.set('isDeleted', true);
+    const userGroups = await deletedUser.getGroups();
+    await deletedUser.removeGroups(userGroups, { transaction: t });
+    await deletedUser.save({ transaction: t });
+    await t.commit();
+    return true;
+  } catch (error) {
+    await t.rollback();
+    return;
+  }
 }

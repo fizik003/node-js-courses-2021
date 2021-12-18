@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { router as userRouter } from './routers/user.router';
+import { userRouter, groupRouter } from './routers';
 
 export const app = express();
 
@@ -15,3 +15,4 @@ app.use('/', (req: Request, res: Response, next) => {
 });
 
 app.use('/user', userRouter);
+app.use('/group', groupRouter);

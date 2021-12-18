@@ -1,5 +1,13 @@
 import { sequelize } from '../common/db';
-import { DataTypes, Model, Optional } from 'sequelize';
+import {
+  DataTypes,
+  BelongsToManyAddAssociationMixin,
+  Model,
+  Optional,
+  BelongsToManyGetAssociationsMixin,
+  BelongsToManyRemoveAssociationsMixin,
+} from 'sequelize';
+import { Group } from './';
 
 interface IUser {
   id: string;
@@ -11,10 +19,29 @@ interface IUser {
 
 export interface IUserReq extends Optional<IUser, 'id' | 'isDeleted'> {}
 
-export interface IUserInstance extends Model<IUser, IUserReq> {}
+export class User extends Model<IUser, IUserReq> implements IUser {
+  id!: string;
+  login!: string;
+  password!: string;
+  age!: number;
+  isDeleted!: boolean;
 
-export const User = sequelize.define<IUserInstance>(
-  'User',
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
+
+  public addGroup!: BelongsToManyAddAssociationMixin<Group, number>;
+  public removeGroups!: BelongsToManyRemoveAssociationsMixin<Group, string>;
+  public getGroups!: BelongsToManyGetAssociationsMixin<Group>;
+
+  toJSON() {
+    const values = Object.assign({}, this.get());
+    delete values.password;
+    delete values.isDeleted;
+    return values;
+  }
+}
+
+User.init(
   {
     id: {
       type: DataTypes.UUID,
@@ -41,14 +68,9 @@ export const User = sequelize.define<IUserInstance>(
     },
   },
   {
-    createdAt: false,
+    sequelize,
+    tableName: 'Users',
+    timestamps: false,
     updatedAt: false,
   }
 );
-
-User.prototype.toJSON = function () {
-  const values = Object.assign({}, this.get());
-  delete values.password;
-  delete values.isDeleted;
-  return values;
-};
