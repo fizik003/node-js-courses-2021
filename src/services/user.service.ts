@@ -6,24 +6,18 @@ export const getUsers = async (subStr?: string, limit?: string) => {
     const isNumber = /^\d+$/.test(limit);
     subStr = subStr ? subStr : '';
     const limitRes = isNumber ? Number(limit) : undefined;
-    return await userDb.getByParams(subStr, limitRes);
+    return userDb.getByParams(subStr, limitRes);
   }
-  const users = await userDb.getAll();
-  return users;
+  return userDb.getAll();
 };
 
 export const get = async (id: string) => {
   const user = await userDb.get(id);
   if (user) return user;
-
-  return null;
 };
 
 export const create = async (user: IUserReq) => {
-  const newUser = await userDb.create(user);
-  if (!newUser) return;
-
-  return newUser;
+  return userDb.create(user);
 };
 
 export const update = async (id: string, userData: Partial<IUserReq>) => {
@@ -34,7 +28,5 @@ export const update = async (id: string, userData: Partial<IUserReq>) => {
 };
 
 export const remove = async (id: string) => {
-  const isDeleted = await userDb.remove(id);
-  if (!isDeleted) return;
-  return isDeleted;
+  return await userDb.remove(id);
 };
