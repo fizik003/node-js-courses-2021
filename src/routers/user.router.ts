@@ -2,56 +2,73 @@ import { userFieldValidator } from '../middleware';
 import { IUserReq } from '../models/user.model';
 import { Router } from 'express';
 import { userService } from '../services/';
+import { NotFoundError } from '../common/errors';
 
 export const router = Router();
 
-router.get('/', async (req, res) => {
-  const { loginSubstring, limit } = req.query;
-  const users = await userService.getUsers(loginSubstring as string, limit as string);
-
-  res.json(users);
-});
-
-router.get('/:id', async (req, res) => {
-  const user = await userService.get(req.params.id);
-
-  if (!user) {
-    return res.json({ message: 'user not found' }).status(404);
+router.get('/', async (req, res, next) => {
+  try {
+    const { loginSubstring, limit } = req.query;
+    const users = await userService.getUsers(loginSubstring as string, limit as string);
+    res.json(users);
+  } catch (error) {
+    return next(error);
   }
-
-  res.json(user);
 });
 
-router.post('/', userFieldValidator, async (req, res) => {
-  const userData: IUserReq = {
-    login: req.body.login,
-    age: req.body.age,
-    password: req.body.password,
-  };
-
-  const newUser = await userService.create(userData);
-  res.json(newUser);
+router.get('/:id', async (req, res, next) => {
+  try {
+    const user = await userService.get(req.params.id);
+    if (!user) {
+      throw new NotFoundError();
+    }
+    res.json(user);
+  } catch (error) {
+    return next(error);
+  }
 });
 
-router.put('/:id', userFieldValidator, async (req, res) => {
-  const id = req.params.id;
-  const { login, age, password } = req.body;
-  const userData: Partial<IUserReq> = {
-    login,
-    age,
-    password,
-  };
-
-  const updatedUser = await userService.update(id, userData);
-  if (!updatedUser) return res.json({ message: 'user not updated' }).status(400);
-
-  res.json(updatedUser);
+router.post('/', userFieldValidator, async (req, res, next) => {
+  try {
+    const userData: IUserReq = {
+      login: req.body.login,
+      age: req.body.age,
+      password: req.body.password,
+    };
+    const newUser = await userService.create(userData);
+    res.json(newUser);
+  } catch (error) {
+    return next(error);
+  }
 });
 
-router.delete('/:id', async (req, res) => {
-  const id = req.params.id;
-  const isDeleted = await userService.remove(id);
-  if (!isDeleted) return res.json({ message: 'user was not deleted' }).status(400);
+router.put('/:id', userFieldValidator, async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const { login, age, password } = req.body;
+    const userData: Partial<IUserReq> = {
+      login,
+      age,
+      password,
+    };
 
-  res.json('User deleted');
+    const updatedUser = await userService.update(id, userData);
+    if (!updatedUser) throw new NotFoundError();
+
+    res.json(updatedUser);
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    const isDeleted = await userService.remove(id);
+    if (!isDeleted) throw new NotFoundError();
+
+    res.json('User deleted');
+  } catch (error) {
+    next(error);
+  }
 });
