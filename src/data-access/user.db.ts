@@ -10,6 +10,15 @@ export async function getAll() {
   });
 }
 
+export async function getByLogin(login: string) {
+  return User.findOne({
+    where: {
+      login,
+      isDeleted: false,
+    },
+  });
+}
+
 export async function getByParams(subStr: string, limit?: number) {
   return User.findAll({
     where: {

@@ -1,24 +1,25 @@
 import { verify } from 'jsonwebtoken';
 import config from '../common/config';
 import { Response, Request, NextFunction } from 'express';
-import { UnauthorizedError } from '../common/errors';
+import { ForbiddenError, UnauthorizedError } from '../common/errors';
 
-const { JWT_SECRET_KEY } = config;
+const { JWT_ACCESS_SECRET_KEY } = config;
 
-export const checkToken = (req: Request, res: Response, next: NextFunction) => {
-  const openPath = ['/login', '/refresh-Token'];
+export const checkToken = async (req: Request, res: Response, next: NextFunction) => {
+  const openPath = ['/login', '/refresh-token'];
   if (openPath.includes(req.path)) return next();
-  const token = req.headers.authorization;
+  const token = await req.headers.authorization;
 
   if (token) {
-    verify(token, JWT_SECRET_KEY as string, (err, decoded) => {
+    console.log(123);
+    await verify(token, JWT_ACCESS_SECRET_KEY as string, (err, decoded) => {
       if (err) {
-        next(new UnauthorizedError('Invalid token'));
+        next(new ForbiddenError('Invalid token'));
       } else {
         next();
       }
     });
+  } else {
+    next(new UnauthorizedError());
   }
-
-  next(new UnauthorizedError());
 };

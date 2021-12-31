@@ -1,7 +1,9 @@
 import express, { Request, Response } from 'express';
-import { userRouter, groupRouter } from './routers';
+import { userRouter, groupRouter, authRouter } from './routers';
+
 import { requestLogger, errorHandler } from './middleware';
 import log from './common/logger';
+import { checkToken } from './middleware/checkToken';
 
 export const app = express();
 
@@ -16,9 +18,11 @@ app.use('/', (req: Request, res: Response, next) => {
 
   next();
 });
-
+app.use(checkToken);
 app.use('/user', userRouter);
 app.use('/group', groupRouter);
+app.use('/login', authRouter);
+
 app.use(errorHandler);
 
 process
