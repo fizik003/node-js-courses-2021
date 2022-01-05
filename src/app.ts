@@ -3,9 +3,11 @@ import { userRouter, groupRouter, authRouter } from './routers';
 import { requestLogger, errorHandler } from './middleware';
 import log from './common/logger';
 import { checkToken } from './middleware/checkToken';
+import cors from 'cors';
 
 export const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
 
