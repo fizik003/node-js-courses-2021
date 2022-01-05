@@ -21,7 +21,8 @@ router.post('/', async (req, res, next) => {
 router.post('/refresh-token', async (req, res, next) => {
   try {
     const refreshToken = req.body;
-    const newToken = await authService.refreshToken(refreshToken);
+    const tokens = await authService.refreshToken(refreshToken);
+    res.json(tokens);
   } catch (error) {
     next(error);
   }

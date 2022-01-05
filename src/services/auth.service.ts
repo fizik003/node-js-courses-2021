@@ -23,6 +23,6 @@ export const refreshToken = async (token: string) => {
 
     const payload = { id: decoded?.id, login: decoded?.login };
     const accessToken = sign(payload, JWT_ACCESS_SECRET_KEY, { expiresIn: '10m' });
-    return { accessToken };
+    return { accessToken, refreshToken: token };
   });
 };
