@@ -27,6 +27,10 @@ export const update = async (id: string, userData: Partial<IUserReq>) => {
   return updatedUser[1][0];
 };
 
+export const getByLogin = async (login: string) => {
+  return userDb.getByLogin(login);
+};
+
 export const remove = async (id: string) => {
   return await userDb.remove(id);
 };

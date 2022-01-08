@@ -13,3 +13,15 @@ export class NotFoundError extends CustomError {
     super(404, message);
   }
 }
+
+export class UnauthorizedError extends CustomError {
+  constructor(message = 'Unauthorized Error') {
+    super(401, message);
+  }
+}
+
+export class ForbiddenError extends CustomError {
+  constructor(message = 'Forbidden Error') {
+    super(403, message);
+  }
+}
