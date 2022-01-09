@@ -7,6 +7,10 @@ export async function getAll() {
     where: {
       isDeleted: false,
     },
+    include: {
+      model: Group,
+      through: { attributes: [] },
+    },
   });
 }
 

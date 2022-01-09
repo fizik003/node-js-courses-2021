@@ -9,7 +9,7 @@ import {
 } from 'sequelize';
 import { Group } from './';
 
-interface IUser {
+export interface IUser {
   id: string;
   login: string;
   password: string;
