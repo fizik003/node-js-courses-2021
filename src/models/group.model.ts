@@ -4,7 +4,7 @@ import { User } from './user.model';
 
 export type Permission = 'READ' | 'WRITE' | 'DELETE' | 'SHARE' | 'UPLOAD_FILES';
 
-interface IGroup {
+export interface IGroup {
   id: string;
   name: string;
   permission: Permission[];
