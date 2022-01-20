@@ -10,7 +10,7 @@ export const login = async (login: string, passward: string) => {
   if (!user || user.password !== passward) throw new NotFoundError('invalid login or password');
 
   const payload = { id: user.id, login: user.login };
-  const accessToken = sign(payload, JWT_ACCESS_SECRET_KEY, { expiresIn: '10m' });
+  const accessToken = sign(payload, JWT_ACCESS_SECRET_KEY, { expiresIn: '1h' });
   const refreshToken = sign(payload, JWT_REFRESH_SECRET_KEY, { expiresIn: '60m' });
   return { accessToken, refreshToken };
 };
