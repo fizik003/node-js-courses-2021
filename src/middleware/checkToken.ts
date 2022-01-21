@@ -6,7 +6,7 @@ import { ForbiddenError, UnauthorizedError } from '../common/errors';
 const { JWT_ACCESS_SECRET_KEY } = config;
 
 export const checkToken = async (req: Request, res: Response, next: NextFunction) => {
-  const openPath = ['/login', '/refresh-token'];
+  const openPath = ['/login', '/refresh-token', '/user/create'];
   if (openPath.includes(req.path)) return next();
   const token = await req.headers.authorization;
 

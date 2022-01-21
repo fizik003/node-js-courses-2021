@@ -38,3 +38,5 @@ process
 // for check
 // Promise.reject(Error('Oops!'));
 // throw Error('Oops!');
+
+export default app;

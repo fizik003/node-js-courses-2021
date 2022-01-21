@@ -9,6 +9,6 @@ export const router = Router();
 
 router.get('/', userController.getUsers);
 router.get('/:id', userController.getById);
-router.post('/', userFieldValidator, userController.create);
+router.post('/create', userFieldValidator, userController.create);
 router.put('/:id', userFieldValidator, userController.update);
 router.delete('/:id', userController.remove);
