@@ -31,7 +31,7 @@ export const usersMock = [
     id: '98bdc950-6a2d-11ec-a882-d3b7e3716a25',
     login: 'yury3',
     age: 11,
-    password: 'qwerty',
+    password: 'qwerty4',
     isDeleted: false,
   },
   {
