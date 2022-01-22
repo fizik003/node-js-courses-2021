@@ -1,0 +1,17 @@
+error: Jan-09-2022 01:23:49: 	Method: POST, params: {}, query: {}, Message: Unauthorized Error
+error: Jan-09-2022 01:27:59: 	Method: GET, params: {}, query: {}, Message: Unauthorized Error
+error: Jan-09-2022 01:29:13: 	Method: GET, params: {}, query: {}, Message: Unauthorized Error
+error: Jan-09-2022 01:30:14: 	Method: GET, params: {}, query: {}, Message: Unauthorized Error
+error: Jan-09-2022 01:31:04: 	Method: GET, params: {}, query: {}, Message: Unauthorized Error
+error: Jan-09-2022 01:31:05: 	Method: GET, params: {}, query: {}, Message: Unauthorized Error
+error: Jan-09-2022 01:37:46: 	Internal error: SequelizeEagerLoadingError: Group is associated to User using an alias. You've included an alias (groups), but it does not match the alias(es) defined in your association (Groups).
+    at Function._getIncludedAssociation (/Users/matthias/courses/node-js-courses-2021/node_modules/sequelize/lib/model.js:718:15)
+    at Function._validateIncludedElement (/Users/matthias/courses/node-js-courses-2021/node_modules/sequelize/lib/model.js:613:53)
+    at /Users/matthias/courses/node-js-courses-2021/node_modules/sequelize/lib/model.js:509:37
+    at Array.map (<anonymous>)
+    at Function._validateIncludedElements (/Users/matthias/courses/node-js-courses-2021/node_modules/sequelize/lib/model.js:504:39)
+    at Function.findAll (/Users/matthias/courses/node-js-courses-2021/node_modules/sequelize/lib/model.js:1722:12)
+    at processTicksAndRejections (internal/process/task_queues.js:93:5)
+    at async /Users/matthias/courses/node-js-courses-2021/src/routers/user.router.ts:12:19
+error: Jan-09-2022 17:46:50: 	Method: GET, params: {}, query: {}, Message: Invalid token
+error: Jan-09-2022 17:47:34: 	Method: GET, params: {}, query: {}, Message: Invalid token
